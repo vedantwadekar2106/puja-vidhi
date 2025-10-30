@@ -1,0 +1,16 @@
+body{
+   background-image: url("css3.jpg");
+   background-size: cover;
+   background-position: center;
+   background-repeat:no-repeat;
+}
+header{
+background-color: rgba(243, 106, 106, 0.7);
+    padding: 10px 20px;
+    border-radius: 8%;
+}
+footer{
+    background-color: rgba(243, 106, 106, 0.7);
+    padding: 10px 20px;
+    border-radius: 8%;
+}
