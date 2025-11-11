@@ -7,23 +7,78 @@
     <title>pujaa</title>
     <link rel="stylesheet" href="1.css">
 
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement(
+        { pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE },
+        'google_translate_element'
+      );
+    }
+  </script>
+  <!-- Use explicit https: so it loads even from file:// or different contexts -->
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
 <body>
-     <header class="text-gray-600 body-font">
+
+  <div id="popup">
+    <div class="popup-content">
+      <div class="mantra">ॐ नमः शिवाय</div>
+    </div>
+  </div>
+
+  <!-- Chant Sound -->
+  <audio id="chant" src="om.mp3" preload="auto"></audio>
+
+
+  <script>
+    window.addEventListener("load", () => {
+      const popup = document.getElementById("popup");
+      const audio = document.getElementById("chant");
+
+      popup.style.display = "flex";
+
+      // Try to unmute after a small delay
+      setTimeout(() => {
+        audio.muted = false;
+        audio.play().catch((err) => {
+          console.log("Autoplay blocked — waiting for user interaction.");
+          document.body.addEventListener("click", () => {
+            audio.muted = false;
+            audio.play();
+          }, { once: true });
+        });
+      }, 1000);
+
+      // Optional: Hide popup after 5 seconds
+      setTimeout(() => {
+        popup.style.display = "none";
+      }, 5000);
+    });
+  </script>
+
+  <header class="text-gray-600 body-font">
   <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
     <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+      <img src="baba.jpg" alt="Logo" class="logo">
         <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
       </svg>
       <span class="ml-3 text-xl">Puja Vidhi</span>
     </a>
     <nav class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-400	flex flex-wrap items-center text-base justify-center">
       
-      <a href="3.html" class="mr-5 hover:text-gray-900">patrika / Dhos</a></a>
+      <a href="patrika,dhos.html" class="mr-5 hover:text-gray-900">patrika / Dhos</a></a>
       <a href="3.html" class="mr-5 hover:text-gray-900">ganesh pujan</a></a>
       <a href="3.html" class="mr-5 hover:text-gray-900">shanti karm</a></a>
     </nav>
-    <a href="2.html">
-    <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0"> sing up
+    
+          <!-- translate + signup grouped -->
+      <div class="flex items-center space-x-4">
+        <!-- Google Translate container: DO NOT put other content inside this div -->
+        <div id="google_translate_element" aria-hidden="false"></div>
+
+        <!-- Sign Up button -->
+    <a href="signup.html">
+    <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0"> sign up
       <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
         <path d="M5 12h14M12 5l7 7-7 7"></path>
       </svg></a>
@@ -31,12 +86,13 @@
     </div>
 </header>
 <hr>
-<section1 class="text-gray-600 body-font">
+<section class="text-gray-600 body-font">
   <div class="container px-5 py-24 mx-auto">
     <div class="flex flex-wrap -m-4">
       <div class="p-4 md:w-1/3">
         <div class="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
-          <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="https://dummyimage.com/720x400" alt="blog">
+          <div class="card">
+          <img class="lg:h-48.5 md:h-36 w-full object-cover object-center" src="udak shant2.jpg" alt="blog">
           <div class="p-6">
             <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">CATEGORY</h2>
             <h1 class="title-font text-lg font-medium text-gray-900 mb-3">udak shanti</h1>
@@ -63,13 +119,14 @@
           </div>
         </div>
       </div>
+      </div>
       <div class="p-4 md:w-1/3">
         <div class="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
-          <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="https://dummyimage.com/721x401" alt="blog">
+          <img class="lg:h-48.5 md:h-36 w-full object-cover object-center" src="vastuk shant.jpg" alt="blog">
           <div class="p-6">
             <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">CATEGORY</h2>
-            <h1 class="title-font text-lg font-medium text-gray-900 mb-3">The 400 Blows</h1>
-            <p class="leading-relaxed mb-3">Photo booth fam kinfolk cold-pressed sriracha leggings jianbing microdosing tousled waistcoat.</p>
+            <h1 class="title-font text-lg font-medium text-gray-900 mb-3">Vastuk Shanti</h1>
+            <p class="leading-relaxed mb-3">Do Vastu Shanti for your new home to bring peace and positive energy. It includes a havan to calm the Vastu Purush and balance the house.</p>
             <div class="flex items-center flex-wrap">
               <a class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0">Learn More
                 <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -94,11 +151,11 @@
       </div>
       <div class="p-4 md:w-1/3">
         <div class="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
-          <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="https://dummyimage.com/722x402" alt="blog">
+          <img class="lg:h-48.5 md:h-36 w-full object-cover object-center" src="satyanarayan.jpg" alt="blog">
           <div class="p-6">
-            <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">udak shanti</h2>
-            <h1 class="title-font text-lg font-medium text-gray-900 mb-3">Shooting Stars</h1>
-            <p class="leading-relaxed mb-3">Photo booth fam kinfolk cold-pressed sriracha leggings jianbing microdosing tousled waistcoat.</p>
+            <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">CATEGORY</h2>
+            <h1 class="title-font text-lg font-medium text-gray-900 mb-3">satyanarayan</h1>
+            <p class="leading-relaxed mb-3">You can perform Satyanarayan Puja after a wedding to bring peace and harmony to the home. It can also be done after observing a fast for blessings and positivity.</p>
             <div class="flex items-center flex-wrap ">
               <a class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0">Learn More
                 <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -125,40 +182,97 @@
   </div>
 </section>
 <footer class="text-gray-600 body-font">
-  <div class="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
-    <a class="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
-        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-      </svg>
-      <span class="ml-3 text-xl">Puja Vidhi</span>
-    </a>
-    <p class="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">© 2020 Tailblocks —
-      <a href="https://twitter.com/knyttneve" class="text-gray-600 ml-1" rel="noopener noreferrer" target="_blank">@knyttneve</a>
-    </p>
-    <span class="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
-      <a class="text-gray-500">
-        <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
-          <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
+  <div class="container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
+    <div class="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
+      <a class="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
+       <img src="baba.jpg" alt="Logo" class="logo">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
         </svg>
+        <span class="ml-3 text-xl">puja Vidhi</span>
       </a>
-      <a class="ml-3 text-gray-500">
-        <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
-          <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"></path>
-        </svg>
-      </a>
-      <a class="ml-3 text-gray-500">
-        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
-          <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-          <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"></path>
-        </svg>
-      </a>
-      <a class="ml-3 text-gray-500">
-        <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="0" class="w-5 h-5" viewBox="0 0 24 24">
-          <path stroke="none" d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"></path>
-          <circle cx="4" cy="4" r="2" stroke="none"></circle>
-        </svg>
-      </a>
-    </span>
+      <p class="mt-2 text-sm text-black-500">Let’s understand happiness and duty — because true happiness comes when we fulfill our duties with sincerity, purpose, and a positive heart. When we follow our responsibilities with dedication, life becomes more peaceful, balanced, and meaningful.</p>
+    </div>
+     <div class="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center">
+     <div class="w-full px-4 mb-8">
+      <h1 id="discover-heading" class="font-semibold text-lg mb-3 text-center">"Discover How We Can Help You"</h1>
+     </div>
+      <div class="lg:w-1/4 md:w-1/2 w-full px-4">
+        <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">patrika</h2>
+        <nav >
+          <ul class="list-none mb-10">
+          <li>
+            <a class="text-gray-600 hover:text-gray-800">janm kundli</a>
+          </li>
+          <li>
+            <a class="text-gray-600 hover:text-gray-800">rashi kundli</a>
+          </li>
+          <li>
+            <a class="text-gray-600 hover:text-gray-800">grahanchi dasha</a>
+          </li>
+          <li>
+            <a class="text-gray-600 hover:text-gray-800">bhavisha</a>
+          </li>
+        </ul>
+        </nav>
+      </div>
+      <div class="lg:w-1/4 md:w-1/2 w-full px-4">
+        <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">Aabhishek</h2>
+        <nav> 
+          <ul class="list-none mb-10">
+          <li>
+            <a class="text-gray-600 hover:text-gray-800">ganesh pujan</a>
+          </li>
+          <li>
+            <a class="text-gray-600 hover:text-gray-800">satyanarayan</a>
+          </li>
+          <li>
+            <a class="text-gray-600 hover:text-gray-800">Third Link</a>
+          </li>
+          <li>
+            <a class="text-gray-600 hover:text-gray-800">Fourth Link</a>
+          </li>
+        </ul>
+        </nav>
+      </div>
+      <div class="lg:w-1/4 md:w-1/2 w-full px-4">
+        <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">CATEGORIES</h2>
+        <nav> 
+          <ul class="list-none mb-10">
+          <li>
+            <a class="text-gray-600 hover:text-gray-800">First Link</a>
+          </li>
+          <li>
+            <a class="text-gray-600 hover:text-gray-800">Second Link</a>
+          </li>
+          <li>
+            <a class="text-gray-600 hover:text-gray-800">Third Link</a>
+          </li>
+          <li>
+            <a class="text-gray-600 hover:text-gray-800">Fourth Link</a>
+          </li>
+        </ul>
+        </nav>
+      </div>
+      <div class="lg:w-1/4 md:w-1/2 w-full px-4">
+        <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">CATEGORIES</h2>
+        <nav>
+          <ul class="list-none mb-10">
+          <li>
+            <a class="text-gray-600 hover:text-gray-800">First Link</a>
+          </li>
+          <li>
+            <a class="text-gray-600 hover:text-gray-800">Second Link</a>
+          </li>
+          <li>
+            <a class="text-gray-600 hover:text-gray-800">Third Link</a>
+          </li>
+          <li>
+            <a class="text-gray-600 hover:text-gray-800">Fourth Link</a>
+          </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
   </div>
 </footer>
 </body>

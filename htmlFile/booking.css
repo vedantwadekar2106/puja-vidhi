@@ -1,0 +1,23 @@
+body{
+   background-image: url("css3.jpg");
+   background-size: cover;
+   background-position: center;
+   background-repeat:no-repeat;
+   
+.logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%; /* Makes image round */
+  object-fit: cover;  /* Keeps image nicely inside circle */
+  border: 3px solid #333; /* Optional border */
+}
+
+
+
+footer{
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 40px 80px;
+    margin-top: 40;
+    border-radius: 8%;
+}
+
