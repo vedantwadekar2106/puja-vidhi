@@ -36,7 +36,8 @@
     <div class="step text-blue-600">1. Service</div>
     <div class="step text-gray-400">2. Date</div>
     <div class="step text-gray-400">3. Details</div>
-    <div class="step text-gray-400">4. Confirm</div>
+    <div class="step text-gray-400">4. Payment</div>
+    <div class="step text-gray-400">5. Confirm</div>
   </div>
 
   <!-- STEP 1 -->
@@ -89,8 +90,26 @@
     </div>
   </div>
 
-  <!-- STEP 4 -->
+  <!-- STEP 4 - PAYMENT -->
   <div id="step4" class="hidden">
+    <h2 class="text-xl font-bold mb-4 text-green-700">Pay ₹500 Advance to Confirm Booking</h2>
+
+    <p class="text-gray-700 mb-2">Scan this QR to pay via any UPI app:</p>
+    <img src="QRcode.jpg" alt="UPI QR Code" class="w-48 mx-auto mb-4 border rounded-lg shadow-md">
+
+    <p class="text-sm text-gray-600 mb-2">UPI ID: <strong>vedantwadekar49@okaxis</strong></p>
+
+    <input type="text" id="txnId" placeholder="Enter UPI Transaction ID" class="w-full p-3 border rounded-lg mb-4">
+    <p class="text-xs text-gray-500 mb-3">Enter the transaction ID after paying ₹500 to proceed.</p>
+
+    <div class="flex justify-between">
+      <button id="back4" class="bg-gray-300 px-4 py-2 rounded-lg">Back</button>
+      <button id="next4" class="bg-blue-600 text-white px-4 py-2 rounded-lg" disabled>Next</button>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div id="step5" class="hidden">
     <h2 class="text-xl font-bold mb-4">Confirm Your Booking</h2>
 
     <div class="p-4 bg-gray-100 rounded-lg mb-4">
@@ -118,15 +137,18 @@
   const step2 = document.getElementById("step2");
   const step3 = document.getElementById("step3");
   const step4 = document.getElementById("step4");
+  const step5 = document.getElementById("step5");
 
   const next1 = document.getElementById("next1");
   const next2 = document.getElementById("next2");
   const next3 = document.getElementById("next3");
+  const next4 = document.getElementById("next4");
   const confirmBtn = document.getElementById("confirm");
 
   const back2 = document.getElementById("back2");
   const back3 = document.getElementById("back3");
   const back4 = document.getElementById("back4");
+  const back5 = document.getElementById("back5");
 
   const service = document.getElementById("service");
   const date = document.getElementById("date");
@@ -135,52 +157,52 @@
   const name = document.getElementById("name");
   const phone = document.getElementById("phone");
   const address = document.getElementById("address");
+  const txnId = document.getElementById("txnId");
 
   // VALIDATION
-  service.addEventListener("change", () => {
-    next1.disabled = service.value === "";
-  });
-
-  function checkStep2() {
-    next2.disabled = !(date.value && time.value && ampm.value);
-  }
-
+  service.addEventListener("change", () => {next1.disabled = service.value === ""});
   date.addEventListener("change", checkStep2);
   time.addEventListener("change", checkStep2);
   ampm.addEventListener("change", checkStep2);
-
-  function checkStep3() {
-    next3.disabled = !(name.value && phone.value.length === 10 && address.value);
-  }
-
   name.addEventListener("input", checkStep3);
   phone.addEventListener("input", checkStep3);
   address.addEventListener("input", checkStep3);
+  txnId.addEventListener("input", () => next4.disabled = txnId.value.trim().length < 8);
 
-  // STEP MOVEMENT
+  
+
+  function checkStep2() { next2.disabled = !(date.value && time.value && ampm.value); }
+  function checkStep3() { next3.disabled = !(name.value && phone.value.length === 10 && address.value); }
+
+
+  // Step transitions
   next1.onclick = () => { step1.classList.add("hidden"); step2.classList.remove("hidden"); };
   next2.onclick = () => { step2.classList.add("hidden"); step3.classList.remove("hidden"); };
-
-  next3.onclick = () => {
+  next3.onclick = () => { step3.classList.add("hidden"); step4.classList.remove("hidden"); };
+  next4.onclick = () => {
     document.getElementById("cService").innerText = service.value;
     document.getElementById("cDate").innerText = date.value;
     document.getElementById("cTime").innerText = time.value + " " + ampm.value;
     document.getElementById("cName").innerText = name.value;
     document.getElementById("cPhone").innerText = phone.value;
     document.getElementById("cAddress").innerText = address.value;
-
-    step3.classList.add("hidden");
-    step4.classList.remove("hidden");
+    document.getElementById("cTxn").innerText = txnId.value;
+    step4.classList.add("hidden"); step5.classList.remove("hidden");
   };
 
   back2.onclick = () => { step2.classList.add("hidden"); step1.classList.remove("hidden"); };
   back3.onclick = () => { step3.classList.add("hidden"); step2.classList.remove("hidden"); };
   back4.onclick = () => { step4.classList.add("hidden"); step3.classList.remove("hidden"); };
+  back5.onclick = () => { step5.classList.add("hidden"); step4.classList.remove("hidden"); };
+
+
+
 
   // GOOGLE SHEETS SUBMISSION
   const scriptURL = "https://script.google.com/macros/s/AKfycbzBLqavkswZ_v2YE43pmNV6XFGhEZ1naQaFpg1E0Z2lcsLC7T7cqThj-1ZI0VvksTZQ/exec";
 
   confirmBtn.onclick = () => {
+    if (!txnId.value.trim()) return alert("Please enter your UPI Transaction ID to confirm.");
     const formData = new FormData();
     formData.append("service", service.value);
     formData.append("date", date.value);
@@ -188,10 +210,11 @@
     formData.append("name", name.value);
     formData.append("phone", phone.value);
     formData.append("address", address.value);
+    formData.append("txnId", txnId.value);
 
     fetch(scriptURL, { method: "POST", body: formData })
-      .then(() => alert("Booking Successful!"))
-      .catch(() => alert("Error sending data"));
+      .then(() => alert("✅Booking Successful!"))
+      .catch(() => alert("❌Error sending data"));
   };
 </script>
 
