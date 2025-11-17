@@ -130,26 +130,22 @@
 
 </div>
 
-<!-- SCRIPT -->
 <script>
-  // Elements
+  // Step elements
   const step1 = document.getElementById("step1");
   const step2 = document.getElementById("step2");
   const step3 = document.getElementById("step3");
   const step4 = document.getElementById("step4");
   const step5 = document.getElementById("step5");
 
+  // Buttons
   const next1 = document.getElementById("next1");
   const next2 = document.getElementById("next2");
   const next3 = document.getElementById("next3");
   const next4 = document.getElementById("next4");
   const confirmBtn = document.getElementById("confirm");
 
-  const back2 = document.getElementById("back2");
-  const back3 = document.getElementById("back3");
-  const back4 = document.getElementById("back4");
-  const back5 = document.getElementById("back5");
-
+  // Inputs
   const service = document.getElementById("service");
   const date = document.getElementById("date");
   const time = document.getElementById("time");
@@ -159,64 +155,111 @@
   const address = document.getElementById("address");
   const txnId = document.getElementById("txnId");
 
-  // VALIDATION
-  service.addEventListener("change", () => {next1.disabled = service.value === ""});
+  // Enable / disable Next buttons for validation
+  service.addEventListener("change", () => next1.disabled = service.value === "");
   date.addEventListener("change", checkStep2);
   time.addEventListener("change", checkStep2);
   ampm.addEventListener("change", checkStep2);
   name.addEventListener("input", checkStep3);
   phone.addEventListener("input", checkStep3);
   address.addEventListener("input", checkStep3);
-  txnId.addEventListener("input", () => next4.disabled = txnId.value.trim().length < 8);
+  txnId.addEventListener("input", validateTxn);
 
-  
+  // ✅ Time validation: only allow between 5 AM and 5 PM
+  function checkStep2() {
+    if (date.value && time.value && ampm.value) {
+      const [hours, minutes] = time.value.split(":").map(Number);
+      const totalHours = ampm.value === "PM" ? hours + 12 : hours;
 
-  function checkStep2() { next2.disabled = !(date.value && time.value && ampm.value); }
-  function checkStep3() { next3.disabled = !(name.value && phone.value.length === 10 && address.value); }
+      if (totalHours >= 5 && totalHours <= 17) {
+        next2.disabled = false;
+      } else {
+        next2.disabled = true;
+        alert("Bookings are allowed only between 5 AM and 5 PM.");
+      }
+    } else {
+      next2.disabled = true;
+    }
+  }
 
+  function checkStep3() {
+    next3.disabled = !(name.value && phone.value.length === 10 && address.value);
+  }
 
-  // Step transitions
-  next1.onclick = () => { step1.classList.add("hidden"); step2.classList.remove("hidden"); };
-  next2.onclick = () => { step2.classList.add("hidden"); step3.classList.remove("hidden"); };
-  next3.onclick = () => { step3.classList.add("hidden"); step4.classList.remove("hidden"); };
+  // ✅ Accepts all valid UPI types (numeric or alphanumeric)
+  function validateTxn() {
+    const tx = txnId.value.trim();
+    next4.disabled = tx.length < 6;
+  }
+
+  // Step navigation
+  next1.onclick = () => {
+    step1.classList.add("hidden");
+    step2.classList.remove("hidden");
+  };
+
+  next2.onclick = () => {
+    step2.classList.add("hidden");
+    step3.classList.remove("hidden");
+  };
+
+  next3.onclick = () => {
+    step3.classList.add("hidden");
+    step4.classList.remove("hidden");
+  };
+
   next4.onclick = () => {
+    const tx = txnId.value.trim();
+    if (tx.length < 6) return alert("Please enter a valid Transaction ID (min 6 characters).");
+
     document.getElementById("cService").innerText = service.value;
     document.getElementById("cDate").innerText = date.value;
     document.getElementById("cTime").innerText = time.value + " " + ampm.value;
     document.getElementById("cName").innerText = name.value;
     document.getElementById("cPhone").innerText = phone.value;
     document.getElementById("cAddress").innerText = address.value;
-    document.getElementById("cTxn").innerText = txnId.value;
-    step4.classList.add("hidden"); step5.classList.remove("hidden");
+
+    step4.classList.add("hidden");
+    step5.classList.remove("hidden");
   };
 
-  back2.onclick = () => { step2.classList.add("hidden"); step1.classList.remove("hidden"); };
-  back3.onclick = () => { step3.classList.add("hidden"); step2.classList.remove("hidden"); };
-  back4.onclick = () => { step4.classList.add("hidden"); step3.classList.remove("hidden"); };
-  back5.onclick = () => { step5.classList.add("hidden"); step4.classList.remove("hidden"); };
+  // ✅ Confirm Booking (send to Google Sheets)
+  confirmBtn.onclick = async () => {
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbxjEnNuSVcNbmC3apLtVcqXPMk04kXLRDpoF1NomcsSUWWGpr5npRb-jeuTWL-hvZ52/exec"; // 🔥 Replace with your deployed Apps Script Web App URL
 
+    const payload = new URLSearchParams({
+      service: service.value,
+      date: date.value,
+      time: time.value + " " + ampm.value,
+      name: name.value,
+      phone: phone.value,
+      address: address.value,
+      txnId: txnId.value
+    });
 
+    try {
+      const res = await fetch(webAppUrl, {
+        method: "POST",
+        body: payload
+      });
 
+      const text = await res.text();
 
-  // GOOGLE SHEETS SUBMISSION
-  const scriptURL = "https://script.google.com/macros/s/AKfycbzBLqavkswZ_v2YE43pmNV6XFGhEZ1naQaFpg1E0Z2lcsLC7T7cqThj-1ZI0VvksTZQ/exec";
-
-  confirmBtn.onclick = () => {
-    if (!txnId.value.trim()) return alert("Please enter your UPI Transaction ID to confirm.");
-    const formData = new FormData();
-    formData.append("service", service.value);
-    formData.append("date", date.value);
-    formData.append("time", time.value + " " + ampm.value);
-    formData.append("name", name.value);
-    formData.append("phone", phone.value);
-    formData.append("address", address.value);
-    formData.append("txnId", txnId.value);
-
-    fetch(scriptURL, { method: "POST", body: formData })
-      .then(() => alert("✅Booking Successful!"))
-      .catch(() => alert("❌Error sending data"));
+      if (text.includes("Success") || text.includes("Booking Successful")) {
+        alert("✅ Booking Confirmed! Your data has been saved.");
+        step5.innerHTML = `<h2 class='text-green-600 text-xl font-bold'>✅ Booking Confirmed!</h2>
+        <p>We have received your booking and ₹500 advance payment.</p>`;
+      } else {
+        alert("⚠️ Something went wrong: " + text);
+      }
+    } catch (err) {
+      alert("❌ Error: " + err.message);
+    }
   };
 </script>
+
+<hr>
+
 
 <footer class="text-gray-600 body-font">
   <div class="container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
